@@ -1,8 +1,9 @@
 const express = require('express');
-
+const DB = require('../lib/db');
+const filmMiddleware = require('../lib/params/film_id');
 const router = express.Router();
 
-const DB = require('../lib/db');
+filmMiddleware(router);
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
@@ -15,6 +16,15 @@ router.get('/', (req, res, next) => {
     // error,
     // logout
   });
+});
+
+router.get('/:film_id', (req, res) => {
+  const film = req.film;
+
+  res.render('films/film', {
+    title: film.name,
+    film
+  })
 });
 
 module.exports = router;
