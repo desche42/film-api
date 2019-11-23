@@ -5,11 +5,15 @@ const router = express.Router();
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
-  res.render('index', {
-    title: 'Login',
-    error: req.query.error ? 'Usuario o contraseña incorrectos' : ''
-    // logout
-  });
+  if (req.session.email) {
+    res.redirect('/films');
+  } else {
+    res.render('index', {
+      title: 'Login',
+      error: req.query.error ? 'Usuario o contraseña incorrectos' : ''
+      // logout
+    });
+  }
 });
 
 /* POST login */
