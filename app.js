@@ -3,7 +3,9 @@ const path = require('path');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
+const cookieSession = require('cookie-session');
 const bodyParser = require('body-parser');
+const auth = require('./lib/middlewares/authentication');
 
 // Load routes
 const index = require('./routes');
@@ -22,9 +24,15 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+// con esto luego tendremos en todas las requests
+// request.session
+app.use(cookieSession({
+  name: 'session',
+  keys: ['lkjlkj', 'kjhkjhkjh']
+}));
 
 app.use('/', index);
-app.use('/films', films);
+app.use('/films', auth, films);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

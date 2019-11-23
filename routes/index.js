@@ -5,9 +5,6 @@ const router = express.Router();
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
-  const {email, password} = req.body;
-  const userExists = checkUser(email, password);
-
   res.render('index', {
     title: 'Login',
     error: req.query.error ? 'Usuario o contraseña incorrectos' : ''
@@ -19,7 +16,9 @@ router.get('/', (req, res, next) => {
 router.post('/login', (req, res, next) => {
   const {email, password} = req.body;
   const userExists = checkUser(email, password);
-
+  if (userExists) {
+    req.session = userExists;
+  }
   res.redirect(userExists ? '/films' : '/?error=true');
 });
 
