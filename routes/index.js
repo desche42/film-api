@@ -16,6 +16,11 @@ router.get('/', (req, res, next) => {
   }
 });
 
+router.get('/logout', (req, res) => {
+  req.session = null;
+  res.redirect('/');
+});
+
 /* POST login */
 router.post('/login', (req, res, next) => {
   const {email, password} = req.body;
